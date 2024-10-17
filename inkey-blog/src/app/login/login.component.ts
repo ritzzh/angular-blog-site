@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink,RouterOutlet } from '@angular/router';
+import { Router, RouterLink,RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 // import { UserInfoInterface } from '../user-info-interface';
 import { FormControl } from '@angular/forms';
@@ -28,14 +28,16 @@ export class LoginComponent {
       this.authService.validateLogin(
         this.loginForm.value.email ?? '',
         this.loginForm.value.password ?? ''
-      )
+      ).then((result)=>{
+        if(result) this.router.navigate(['/home'])
+      })
     }
     else{
       alert("Please fill form correctly!")
     }
   }
 
-  constructor(){
+  constructor(private router:Router){
     
   }
 }

@@ -1,44 +1,47 @@
 import { Injectable } from '@angular/core';
 import { UserInfoInterface } from './user-info-interface';
-import { json } from 'stream/consumers';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-  url = 'https://blogbackend-beta.vercel.app';
+  url = 'http://localhost:4000'
 
   async validateSignUp(
     username: string,
+    email: string,
     password1: string,
-    password2: string,
-    email: string
-  ) {
-    const response = await fetch(`${this.url}/signup`, {
+    password2: string
+  ):Promise<boolean> {
+    const response = await fetch(`${this.url}/auth/signup`, {
       method: 'POST',
       mode: 'cors',
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: username,
-        password: password1,
-        email: email,
+        username:username,
+        password:password1,
+        email:email,
       }),
     });
     const data = await response.json();
-    return data;
+    return data.success;
   }
 
   async validateLogin(
     email: string,
     password: string
-  ): Promise<UserInfoInterface | undefined> {
-    const response = await fetch(`${this.url}/login`);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+  ): Promise<boolean | undefined> {
+    const response = await fetch(`${this.url}/auth/login`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email:email,
+        password:password
+      }),
+    });
     const data = await response.json();
-    const users = data;
-    alert(users);
-    return users ?? {};
+    return data.success;
   }
   constructor() {}
 }

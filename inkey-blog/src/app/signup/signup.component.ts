@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { RouterOutlet,RouterLink } from '@angular/router';
+import { RouterOutlet,RouterLink, Router} from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
@@ -14,9 +14,7 @@ import { AuthenticationService } from '../authentication.service';
   styleUrl: './signup.component.css'
 })
 export class SignupComponent {
-
-  formIsInvalid = true;
-  authService = Inject(AuthenticationService);
+  // authService = Inject(AuthenticationService);
 
   signUpForm = new FormGroup({
     email:new FormControl(''),
@@ -24,7 +22,11 @@ export class SignupComponent {
     password1:new FormControl(''),
     password2:new FormControl('')
   })
+  matched:boolean = false
 
+  constructor(private router:Router, private authService:AuthenticationService){
+
+  }
   OnSubmit(){
     if(this.signUpForm.valid){
       if(this.signUpForm.value.password1 !== this.signUpForm.value.password2)
@@ -38,7 +40,12 @@ export class SignupComponent {
           this.signUpForm.value.email ?? '',
           this.signUpForm.value.password1 ?? '',
           this.signUpForm.value.password2??''
-        )
+        ).then((result:boolean)=>{
+          if(result)
+          {
+            this.router.navigate(['/'])
+          }
+        })
       }
     }
     else{
