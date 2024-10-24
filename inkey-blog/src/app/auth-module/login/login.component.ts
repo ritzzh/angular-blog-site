@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink,RouterOutlet } from '@angular/router';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../../authentication.service';
 // import { UserInfoInterface } from '../user-info-interface';
 import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
@@ -23,6 +23,14 @@ export class LoginComponent {
     password:new FormControl(''),
   })
 
+  ngOnInit():void{
+    let loginstatus = localStorage.getItem('login')
+    if(loginstatus==="true")
+    {
+      this.router.navigate(["/home"])
+    }
+  }
+
   onSubmit(){
     if(this.loginForm.valid){
       this.authService.validateLogin(
@@ -34,7 +42,7 @@ export class LoginComponent {
           case "Invalid-U":{alert("The username is wrong or it does not exist");break;}
           case "Invalid-P":{alert("The password is wrong");break;}
           case "Server-E":{alert("Server error, try again");break;}
-          case "Valid":{ this.router.navigate(["/home"]);break; }
+          case "Valid":{ this.router.navigate(["/blog/allblogs"]);break; }
           default :{ alert("ran into some error, try again");break;}
         }
       })

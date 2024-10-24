@@ -2,10 +2,10 @@
   <div class="myblogs-head">
     <h2 class="">My Blogs</h2>
     <div class="buttons">
-      <button class="btn btn-primary" [routerLink]="['/allblogs']">
+      <button class="btn btn-primary" [routerLink]="['/blog/allblogs']">
         All Blog
       </button>
-      <button class="btn btn-primary" [routerLink]="['/createblog']">
+      <button class="btn btn-primary" [routerLink]="['/blog/createblog']">
         Add Blog
       </button>
     </div>
@@ -18,7 +18,7 @@
         <button class="delete" [hidden]="!(blog.isapproved=='rejected')" >Rejected</button>
         <button class="delete" [hidden]="!(blog.isapproved=='approved')" >Approved</button>
         <button class="delete" [hidden]="!(blog.isapproved=='pending')" >Pending</button>
-        <button class="edit" [routerLink] = "['/editblog',blog._id]" >✏️</button>
+        <button class="edit" [routerLink] = "['/blog/editblog',blog._id]" >✏️</button>
         <button class="delete" (click)="deleteBlog(blog._id)" >❌</button>
       </div>
     </div>

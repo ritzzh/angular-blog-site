@@ -2,7 +2,7 @@
   <div class="myblogs-head">
     <h2 class="">All Blogs</h2>
     <div class="buttons">
-      <button class="btn btn-primary" [routerLink]="['/myblogs']">
+      <button class="btn btn-primary" [routerLink]="['/blog/myblogs']">
         My Blogs
       </button>
     </div>
@@ -12,26 +12,26 @@
       <div class="bloglist">
         <h3 class="title">{{ blog.title }}</h3>
         <div class="btn-container">
-          
           <button
-            class="bloglist-btn"
+            class="bloglist-btn "
             [hidden]="!isAdmin || blog.isapproved==='approved' "
             (click)="approveBlog(blog._id,blog.title,blog.content,blog.username,blog.isapproved)"
           >
             ✔️
           </button>
           <button
-            class="bloglist-btn"
+            class="bloglist-btn "
             [hidden]="!isAdmin || blog.isapproved==='approved' || blog.isapproved=='rejected'"
             (click)="rejectBlog(blog._id,blog.title,blog.content,blog.username,blog.isapproved)"
           >
             ❌
           </button>
-          <button class="delete" [hidden]="!(blog.isapproved=='rejected')" >Rejected</button>
-          <button class="delete" [hidden]="(!(blog.isapproved=='approved') || !isAdmin)" >Approved</button>
+          <button class="rejected " [hidden]="!(blog.isapproved=='rejected')" >Rejected</button>
+          <button class="approved " [hidden]="(!(blog.isapproved=='approved') || !isAdmin)" >Approved</button>
+          <button class="creator btn btn-outline-primary" >{{blog.username}}</button>
           <button
-            class="bloglist-btn"
-            [routerLink]="['/displayblog', blog._id]"
+            class="bloglist-btn "
+            [routerLink]="['/blog/displayblog', blog._id]"
           >
             📖
           </button>

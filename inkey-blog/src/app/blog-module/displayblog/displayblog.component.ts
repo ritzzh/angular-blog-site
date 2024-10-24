@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { BlogInfoInterface } from '../blog-info-interface';
-import { BlogService } from '../blog.service';
+import { BlogInfoInterface } from '../../blog-info-interface';
+import { BlogService } from '../../blog.service';
 import { Location } from '@angular/common';
 
 @Component({
@@ -24,11 +24,13 @@ export class DisplayblogComponent {
 
   ngOnInit():void{
     this.blogId = this.route.snapshot.paramMap.get('id')||"";
-    this.blogService.getBlogById(this.blogId).then(
+    this.blogService.getBlogById(this.blogId).subscribe(
       res=>{
-        this.title = res.title;
-        this.content=res.content;
-        this.username=res.username;
+        let blogjson = JSON.stringify(res);
+        let blogobj = JSON.parse(blogjson)
+        this.title = blogobj.data.title;
+        this.content=blogobj.data.content;
+        this.username=blogobj.data.username;
       }
     )
   }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BlogInfoInterface } from './blog-info-interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -85,18 +86,21 @@ export class BlogService {
     return data.success;
   }
 
-  async getBlogById(_id:String):Promise<BlogInfoInterface>{
-    const response = await fetch(`${this.url}/blog/getblog/${_id}`, {
-      method: 'POST',
-      mode: 'cors',
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-    const returnArr = data.data
-    return returnArr||{};
+  getBlogById(_id:String){
+    let data = this.http.get(`${this.url}/blog/getblog/${_id}`)
+    return data;
+
+    // const response = await fetch(`${this.url}/blog/getblog/${_id}`, {
+    //   method: 'POST',
+    //   mode: 'cors',
+    //   headers: { "Content-Type": "application/json" },
+    // });
+    // const data = await response.json();
+    // const returnArr = data.data
+    // return returnArr||{};
   }
 
   
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 }

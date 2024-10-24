@@ -1,9 +1,9 @@
 import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { AuthenticationService } from '../authentication.service';
-import { BlogService } from '../blog.service';
-import { BlogInfoInterface } from '../blog-info-interface';
+import { AuthenticationService } from '../../authentication.service';
+import { BlogInfoInterface } from '../../blog-info-interface';
+import { BlogService } from '../../blog.service';
 
 @Component({
   selector: 'app-myblogs',
@@ -20,6 +20,7 @@ export class MyblogsComponent {
   tempuser: any;
 
   ngOnInit():void{
+    console.log("my blogs")
     this.getBlogs();
   }
 
@@ -32,7 +33,6 @@ export class MyblogsComponent {
       this.tempuser = localStorage.getItem('username');
       this.blogService.getBlog(this.username||this.tempuser).then((result) => {
         this.blogs = result;
-        console.log(result)
       });
     });
   }

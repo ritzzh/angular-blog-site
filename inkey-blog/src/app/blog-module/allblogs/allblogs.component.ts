@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { BlogService } from '../blog.service';
-import { BlogInfoInterface } from '../blog-info-interface';
+import { BlogService } from '../../blog.service';
+import { BlogInfoInterface } from '../../blog-info-interface';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../../authentication.service';
 
 @Component({
   selector: 'app-allblogs',
@@ -42,6 +42,7 @@ export class AllblogsComponent {
   }
 
   ngOnInit():void{
+    console.log("all blogs")
     this.authService.isAdmin$.subscribe(next=>{
       this.isAdmin=next;
       if(!this.isAdmin)

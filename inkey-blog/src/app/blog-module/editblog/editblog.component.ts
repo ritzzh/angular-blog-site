@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder,FormGroup,FormsModule,ReactiveFormsModule,Validators } from '@angular/forms';
-import { BlogService } from '../blog.service';
+import { BlogService } from '../../blog.service';
 import { ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { EditorComponent } from '@tinymce/tinymce-angular';
-import { BlogInfoInterface } from '../blog-info-interface';
+import { BlogInfoInterface } from '../../blog-info-interface';
 
 
 @Component({
@@ -39,9 +39,11 @@ export class EditblogComponent {
   }
 
   getBlogDetails() {
-    this.blogService.getBlogById(this.blogId).then(blog => {
-      this.blogForm.patchValue(blog); 
-      this.bloginfo = blog;
+    this.blogService.getBlogById(this.blogId).subscribe(blog => {
+      let blogjson =  JSON.stringify(blog);
+      let blogobj = JSON.parse(blogjson)
+      this.bloginfo = blogobj;
+      this.blogForm.patchValue(blogobj.data);
     });
   }
 

@@ -50,12 +50,14 @@ export class AuthenticationService {
       }),
     });
     const data = await response.json();
-    this.loggedInSubject.next(data.success);
-    this.usernameSubject.next(data.data.username);
-    this.isAdminSubject.next(data.data.isadmin);
-    localStorage.setItem('username',data.data.username);
-    localStorage.setItem('login',data.success);
-    localStorage.setItem('admin',data.data.isadmin);
+    if(data.success){
+      this.loggedInSubject.next(data.success);
+      this.usernameSubject.next(data.data.username);
+      this.isAdminSubject.next(data.data.isadmin);
+      localStorage.setItem('username',data.data.username);
+      localStorage.setItem('login',data.success);
+      localStorage.setItem('admin',data.data.isadmin);
+    }
     return data.message;
   }
 

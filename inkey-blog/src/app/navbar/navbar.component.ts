@@ -20,7 +20,7 @@ export class NavbarComponent {
 
   handleLogout(){
     this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(["/auth/login"]);
   }
   ngOnInit():void{
     this.authService.loggedIn$.subscribe(msg=>{

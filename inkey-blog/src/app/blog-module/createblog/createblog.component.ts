@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { CommonModule } from '@angular/common';
-import { AuthenticationService } from '../authentication.service';
-import { BlogService } from '../blog.service';
+import { AuthenticationService } from '../../authentication.service';
+import { BlogService } from '../../blog.service';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class CreateblogComponent{
   username:String="";
 
   constructor(private fb: FormBuilder,private authService: AuthenticationService
-    ,private blogService:BlogService
+    ,private blogService:BlogService, private router: Router
   ) {
     this.authService.currUsername$.subscribe(msg=>{
       this.username = msg;
@@ -42,6 +42,7 @@ export class CreateblogComponent{
       this.blogService.saveBlog(blogPost.title,blogPost.content,this.username)
       .then((result)=>{
         if(result)alert("Blog saved successfully")
+          this.router.navigate(["/myblogs"])
       })
     }
   }
