@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
-import { UserInfoInterface } from './user-info-interface';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   url = 'http://localhost:4000'
+  // url='https://blogbackend-beta.vercel.app'
+  private isAdminSubject = new BehaviorSubject<Boolean>(false);
+  isAdmin$ = this.isAdminSubject.asObservable();
+
+  private loggedInSubject = new BehaviorSubject<Boolean>(false);
+  loggedIn$ = this.loggedInSubject.asObservable();
+
+  private usernameSubject = new BehaviorSubject<String>("");
+  currUsername$ = this.usernameSubject.asObservable();
 
   async validateSignUp(
     username: string,
@@ -30,7 +39,7 @@ export class AuthenticationService {
   async validateLogin(
     email: string,
     password: string
-  ): Promise<boolean | undefined> {
+  ): Promise<string> {
     const response = await fetch(`${this.url}/auth/login`, {
       method: 'POST',
       mode: 'cors',
@@ -41,7 +50,27 @@ export class AuthenticationService {
       }),
     });
     const data = await response.json();
-    return data.success;
+    this.loggedInSubject.next(data.success);
+    this.usernameSubject.next(data.data.username);
+    this.isAdminSubject.next(data.data.isadmin);
+    localStorage.setItem('username',data.data.username);
+    localStorage.setItem('login',data.success);
+    localStorage.setItem('admin',data.data.isadmin);
+    return data.message;
+  }
+
+  async logout(){
+    this.loggedInSubject.next(false);
+    localStorage.clear();
+
+  }
+
+  loginStatus:Boolean = false;
+  isAuthenticated(){
+    this.loggedInSubject.subscribe(next=>{
+      this.loginStatus = next;
+    })
+    return this.loginStatus;
   }
   constructor() {}
 }

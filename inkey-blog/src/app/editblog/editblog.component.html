@@ -1,0 +1,42 @@
+<div class="createblogs-outer">
+    <div class="createblogs-head">
+      <h2 class="">Edit Blog</h2>
+      <button class="btn btn-primary" [routerLink]="['/myblogs']">
+        Go to Blog
+      </button>
+    </div>
+    <div class="createblog-create">
+      <div class="create-blog">
+          <form [formGroup]="blogForm" (ngSubmit)="updateBlog()">
+            <div>
+              <label for="title">Title</label>
+              <input type="text" id="title" formControlName="title" />
+              <div *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched">
+                Title is required.
+              </div>
+            </div>
+        
+            <div>
+              <label for="content">Content</label>
+              <editor
+                  apiKey="0cj1uviecifcpmih8jfo4lswwom9ljjgerwzpx5g2yzf8jvi"
+                formControlName="content"
+                [init]="{
+                  height: 400,
+                  menubar: true,
+                  plugins: 'lists link image charmap preview',
+                  toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image'
+                }"
+              ></editor>
+              <div *ngIf="blogForm.get('content')?.invalid && blogForm.get('content')?.touched">
+                Content is required.
+              </div>
+            </div>
+        
+            <button type="submit" [disabled]="blogForm.invalid">Update Blog</button>
+          </form>
+        </div>
+        
+    </div>
+  </div>
+  

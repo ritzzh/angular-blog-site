@@ -29,7 +29,14 @@ export class LoginComponent {
         this.loginForm.value.email ?? '',
         this.loginForm.value.password ?? ''
       ).then((result)=>{
-        if(result) this.router.navigate(['/home'])
+        switch(result)
+        {
+          case "Invalid-U":{alert("The username is wrong or it does not exist");break;}
+          case "Invalid-P":{alert("The password is wrong");break;}
+          case "Server-E":{alert("Server error, try again");break;}
+          case "Valid":{ this.router.navigate(["/home"]);break; }
+          default :{ alert("ran into some error, try again");break;}
+        }
       })
     }
     else{

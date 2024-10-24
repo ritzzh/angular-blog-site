@@ -3,7 +3,8 @@ const cors = require("cors");
 require('dotenv').config({path:'./.env'});
 const bodyParser = require('body-parser');
 const authRouter = require('./routes/authRoute');
-const mongoose = require("mongoose")
+const blogRouter = require('./routes/blogRoutes');
+const mongoose = require("mongoose");
 
 
 mongoose.connect(process.env.MongoUrl)
@@ -24,6 +25,8 @@ app.use(cors({
 }));
 
 app.use('/auth',authRouter);
+app.use('/blog',blogRouter);
+
 app.get('/',(req,res)=>{
     res.send("This is a blog server")
 })

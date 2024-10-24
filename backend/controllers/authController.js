@@ -24,27 +24,25 @@ exports.login = async (req, res) => {
     //   expiresIn: "90",
     // });
 
-    res.status(200).json({ success: true, message:'login successful',data:{
-      name:user.name,
+    // console.log(user.username + "from login")
+    res.status(200).json({ success: true, message:'Valid',data:{
       username: user.username,
       email: user.email,
-      institute: user.institute,
+      isadmin: user.isadmin
     }
   });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Server Error " + err,
+      message: "Server-E",
     });
   }
 };
 
 exports.signup = async (req, res) => {
-  console.log("signup requested");
+  // console.log("signup requested");
   const { username, password, email } = req.body;
-  console.log(username)
-  console.log(password)
-  console.log(email)
+  let isadmin=false;
   try {
     let existingUser = await User.findOne({ username });
     if (existingUser) {
@@ -53,15 +51,15 @@ exports.signup = async (req, res) => {
         message: "username present",
       });
     }
-    const newUser = new User({username,password,email})
+    const newUser = new User({username,password,email,isadmin})
     await newUser.save();
     
     res.status(201).json({
         success:true,
-        message:'user registered'
+        message:'user registered',
     })
   } catch(err) {
-    console.log('signup error :',err);
+    // console.log('signup error :',err);
     res.status(500).json({
         success:false,
         message:'server error'

@@ -1,0 +1,22 @@
+<div class="blog-outer">
+  <div class="blog-container">
+    <div class="blog-header">
+      <div class="blog-title">
+        <h2>{{ title }}</h2>
+        <p>-{{ username }}</p>
+      </div>
+      <div class="blog-cancel">
+        <button (click)="goBack()" class="blog-cancel">X</button>
+      </div>
+    </div>
+    <div class="blog-content" [innerHTML]="content"></div>
+  </div>
+  <div class="blog-comments">
+    <form action="">
+      <label for="comment">Add Comment:</label>
+      <input type="text" name="comment" id="comment" />
+      <button>Comment</button>
+    </form>
+  </div>
+  <div class="display-comments"></div>
+</div>
