@@ -48,7 +48,7 @@ describe('ProfileComponent', () => {
       _id:'test123',
       username: 'testUser',
       email: 'test@example.com',
-      password:'testpass',
+      password:'testpassword',
       profile: 'testProfile',
       isadmin:true,
     };
