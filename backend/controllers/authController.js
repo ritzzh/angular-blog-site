@@ -1,9 +1,9 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const bcryptjs = require('bcryptjs');
+const bcryptjs = require("bcryptjs");
 
 exports.login = async (req, res) => {
-  const {email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
         message: "Invalid-U",
       });
     }
-    const isMatch =  await bcryptjs.compare(password,user.password)
+    const isMatch = await bcryptjs.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({
         success: false,
@@ -25,12 +25,15 @@ exports.login = async (req, res) => {
     // });
 
     // console.log(user.username + "from login")
-    res.status(200).json({ success: true, message:'Valid',data:{
-      username: user.username,
-      email: user.email,
-      isadmin: user.isadmin
-    }
-  });
+    res.status(200).json({
+      success: true,
+      message: "Valid",
+      data: {
+        username: user.username,
+        email: user.email,
+        isadmin: user.isadmin,
+      },
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -42,7 +45,7 @@ exports.login = async (req, res) => {
 exports.signup = async (req, res) => {
   // console.log("signup requested");
   const { username, password, email } = req.body;
-  let isadmin=false;
+  let isadmin = false;
   try {
     let existingUser = await User.findOne({ username });
     if (existingUser) {
@@ -51,19 +54,76 @@ exports.signup = async (req, res) => {
         message: "username present",
       });
     }
-    const newUser = new User({username,password,email,isadmin})
+    const newUser = new User({ username, password, email, isadmin });
     await newUser.save();
-    
+
     res.status(201).json({
-        success:true,
-        message:'user registered',
-    })
-  } catch(err) {
+      success: true,
+      message: "user registered",
+    });
+  } catch (err) {
     // console.log('signup error :',err);
     res.status(500).json({
-        success:false,
-        message:'server error'
-    })
+      success: false,
+      message: "server error",
+    });
   }
+};
 
+exports.updateDetails = async (req, res) => {
+  const { username, password, email, profile } = req.body;
+  try {
+    let updateUser = await User.findOneAndUpdate(
+      { username: username },
+      {
+        password: password,
+        email: email,
+        profile: profile,
+      },
+      { new: true }
+    );
+
+    if (updateUser) {
+      res.status(200).json({
+        success: true,
+        message: "profile updated",
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "failed update",
+      });
+    }
+  } catch (err) {
+    // console.log('signup error :',err);
+    res.status(500).json({
+      success: false,
+      message: "server error",
+    });
+  }
+};
+
+exports.getDetails = async (req, res) => {
+  const { username } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid-U",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Found User",
+      data:user
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server-E",
+    });
+  }
 };
