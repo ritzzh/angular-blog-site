@@ -2,6 +2,9 @@
   <div class="myblogs-head">
     <h2 class="">All Blogs</h2>
     <div class="buttons">
+      <button class="btn btn-primary" [routerLink]="['/profile']">
+        Profile
+      </button> 
       <button class="btn btn-primary" [routerLink]="['/blog/myblogs']">
         My Blogs
       </button>
@@ -10,7 +13,7 @@
   <div *ngFor="let blog of blogs" class="bloglist-con">
     <ng-container *ngIf="isAdmin || blog.isapproved==='approved'">
       <div class="bloglist">
-        <h3 class="title">{{ blog.title }}</h3>
+        <h3 class="title">{{ blog.title | shortTitle}}</h3>
         <div class="btn-container">
           <button
             class="bloglist-btn "

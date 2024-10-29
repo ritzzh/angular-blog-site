@@ -17,18 +17,17 @@ export class NavbarComponent {
   tempuser:any = "";
   isadmin:Boolean = false;
 
-
   handleLogout(){
     this.authService.logout();
-    this.router.navigate(["/auth/login"]);
+    this.router.navigate(["/"]);
   }
   ngOnInit():void{
     this.authService.loggedIn$.subscribe(msg=>{
       this.loggedIn = msg;
-      console.log(this.loggedIn)
       if(!this.loggedIn){
         this.loggedIn = localStorage.getItem('login')==='true'?true:false;
       }
+      console.log("user is logged in : " +this.loggedIn)
     });
     this.authService.currUsername$.subscribe(msg=>{
       this.username = msg;
@@ -36,7 +35,6 @@ export class NavbarComponent {
       {
         this.username = localStorage.getItem('username')||"";
       }
-      console.log(this.username)
     })
     this.authService.isAdmin$.subscribe(next=>{
       this.isadmin=next;

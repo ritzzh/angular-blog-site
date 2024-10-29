@@ -1,5 +1,8 @@
 export interface UserInfoInterface {
-    username:string,
+    _id:string,
     email:string,
+    isadmin:boolean,
     password:string,
+    username:string,
+    profile:string
 }

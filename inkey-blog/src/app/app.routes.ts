@@ -1,5 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
+import { MyblogsComponent } from './blog-module/myblogs/myblogs.component';
+import { ProfileComponent } from './profile/profile.component';
 
 // import { LoginComponent } from './auth-module/login/login.component';
 // import { SignupComponent } from './auth-module/signup/signup.component';
@@ -17,8 +19,13 @@ export const routes: Routes = [
   { path: 'auth', loadChildren:() => import('./auth-module/auth-module.module').then(m=>m.AuthModuleModule)},
   {
     path: '',
-    redirectTo:'auth/login',
+    redirectTo:'/auth/login',
     pathMatch:'full'
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    title:'Profile'
   },
 ];
 

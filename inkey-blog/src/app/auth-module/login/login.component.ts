@@ -2,32 +2,30 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink,RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
 // import { UserInfoInterface } from '../user-info-interface';
-import { FormControl } from '@angular/forms';
+import { EmailValidator, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { IllumBorderDirective } from '../../illum-border.directive';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink,RouterOutlet,ReactiveFormsModule],
+  imports: [RouterLink,RouterOutlet,ReactiveFormsModule, IllumBorderDirective],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
   authService = inject(AuthenticationService);
   routerLink = "signup";
-
-  loginForm = new FormGroup({
-    email:new FormControl(''),
-    password:new FormControl(''),
-  })
+  loginForm:FormGroup;
+  private emailValidator:EmailValidator;
 
   ngOnInit():void{
     let loginstatus = localStorage.getItem('login')
     if(loginstatus==="true")
     {
-      this.router.navigate(["/home"])
+      this.router.navigate(["/blog/allblogs"])
     }
   }
 
@@ -39,7 +37,7 @@ export class LoginComponent {
       ).then((result)=>{
         switch(result)
         {
-          case "Invalid-U":{alert("The username is wrong or it does not exist");break;}
+          case "Invalid-U":{alert("The email is wrong or it does not exist");break;}
           case "Invalid-P":{alert("The password is wrong");break;}
           case "Server-E":{alert("Server error, try again");break;}
           case "Valid":{ this.router.navigate(["/blog/allblogs"]);break; }
@@ -52,7 +50,11 @@ export class LoginComponent {
     }
   }
 
-  constructor(private router:Router){
-    
+  constructor(private router:Router, private fb:FormBuilder){
+    this.emailValidator = new EmailValidator();
+    this.loginForm = this.fb.group({
+      email:["",Validators.required],
+      password:["",[Validators.required,this.emailValidator.validate.bind(this.emailValidator)]]
+    })
   }
 }

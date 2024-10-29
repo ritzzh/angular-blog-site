@@ -10,12 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 const routes: Routes = [
-  {
-    path:'myblogs',
-    component:MyblogsComponent,
-    title:'My Blog',
-    canActivate:[AuthGuard]
-  },
+  
   {
     path:'createblog',
     component:CreateblogComponent,
@@ -29,6 +24,12 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path:'myblogs',
+    component:MyblogsComponent,
+    title:'My Blog',
+    canActivate:[AuthGuard]
+  },
+  {
     path:'allblogs',
     component:AllblogsComponent,
     title:'All Blogs',
@@ -39,7 +40,7 @@ const routes: Routes = [
     component:DisplayblogComponent,
     title: 'Reading Blog',
     canActivate:[AuthGuard]
-  }
+  },
 ];
 
 @NgModule({

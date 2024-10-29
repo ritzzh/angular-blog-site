@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet,RouterLink, Router} from '@angular/router';
-import { LoginComponent } from '../login/login.component';
 import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -43,7 +42,7 @@ export class SignupComponent {
         ).then((result:boolean)=>{
           if(result)
           {
-            this.router.navigate(['/'])
+            this.router.navigate(['/auth/login'])
           }
         })
       }

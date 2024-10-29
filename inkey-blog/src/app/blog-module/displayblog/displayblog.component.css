@@ -49,3 +49,71 @@
 .blog-content{
     width: 90vw;
 }
+
+/* add comment */
+.display-comments{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.blog-comments{
+    margin: 10px;
+}
+.blog-comments label{
+   color: black;
+   margin: 0px 10px;
+}
+.blog-comments button{ 
+    margin: 0px 10px;
+    border-radius: 25px;
+    height: 8vh;
+}
+
+/* show comment */
+
+#comment{
+    width: 60vw;
+    border-radius: 25px;
+    height: 8vh;
+}
+
+.comment-box {
+    width: 100vw;
+    max-height: 80vh; 
+    overflow-y: auto; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.comment-container{
+    margin: 10px 0px;
+    padding: 10px 20px;
+    background-color: black;
+    color: white;
+    width: 80vw;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.comment-box h5 {
+    margin: 0px;
+}
+
+.comment-box p {
+    font-size: 0.8rem;
+    margin: 0px;
+}
+
+/* reply */
+.reply-content{
+    margin: 10px 0px;
+    padding: 10px 20px;
+    background-color: silver;
+    color: black;
+    width: 50vw;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}

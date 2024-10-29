@@ -4,11 +4,12 @@ import { BlogInfoInterface } from '../../blog-info-interface';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthenticationService } from '../../authentication.service';
+import { ShortTitlePipe } from '../../short-title.pipe';
 
 @Component({
   selector: 'app-allblogs',
   standalone: true,
-  imports: [RouterLink,CommonModule,RouterOutlet],
+  imports: [RouterLink,CommonModule,RouterOutlet,ShortTitlePipe],
   templateUrl: './allblogs.component.html',
   styleUrl: './allblogs.component.css'
 })

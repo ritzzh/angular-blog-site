@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder,FormGroup,FormsModule,ReactiveFormsModule,Validators } from '@angular/forms';
 import { BlogService } from '../../blog.service';
 import { ActivatedRoute, Router, RouterLink} from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location} from '@angular/common';
 import { EditorComponent } from '@tinymce/tinymce-angular';
 import { BlogInfoInterface } from '../../blog-info-interface';
 
@@ -24,6 +24,7 @@ export class EditblogComponent {
     private route:ActivatedRoute,
     private router:Router,
     private fb:FormBuilder,
+    private location: Location,
     private blogService:BlogService
   ){
       this.blogForm = this.fb.group({
@@ -33,16 +34,24 @@ export class EditblogComponent {
     });
   }
 
+
   ngOnInit(): void {
     this.blogId = this.route.snapshot.paramMap.get('id')||""; 
     this.getBlogDetails(); 
   }
+
+  goBack(){
+    this.router.navigate(['/blog/allblogs'])
+    this.location.back();
+  }
+
 
   getBlogDetails() {
     this.blogService.getBlogById(this.blogId).subscribe(blog => {
       let blogjson =  JSON.stringify(blog);
       let blogobj = JSON.parse(blogjson)
       this.bloginfo = blogobj;
+      console.log(this.bloginfo)
       this.blogForm.patchValue(blogobj.data);
     });
   }
@@ -59,7 +68,7 @@ export class EditblogComponent {
       ).then(result=>{
         if(result){
           alert("Updated Successfully")
-          this.router.navigate(['/myblogs'])
+          this.router.navigate(['/blog/myblogs'])
         }
       })
     }

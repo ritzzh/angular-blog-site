@@ -3,8 +3,8 @@
       <a class="navbar-brand">Blog App</a>
       <form class="d-flex">
         <Button *ngIf="isadmin" disabled class="admin" >Admin </Button>
-        <Button disabled *ngIf="loggedIn">Hello {{username}}</Button>
-        <button *ngIf="!loggedIn" class="btn btn-outline-primary" [routerLink] = "['/auth']" type="submit">Login</button>
+        <Button  *ngIf="loggedIn" disabled >Hello {{username}}</Button>
+        <button *ngIf="!loggedIn" class="btn btn-outline-primary" [routerLink] = "['/auth/login']" type="submit">Login</button>
         <button *ngIf="loggedIn" class="btn btn-outline-primary" (click)="handleLogout()" type="submit">Logout</button>
       </form>
     </div>

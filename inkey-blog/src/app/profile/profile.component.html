@@ -1,0 +1,89 @@
+<div class="myblogs-head">
+  <h2>All Blogs</h2>
+  <div class="buttons">
+    <button class="btn btn-primary" (click)="goBack()">My Blogs</button>
+  </div>
+</div>
+
+<div class="profile-outer">
+  <div class="profile-image">
+    <img src="{{ imgurl }}" alt="" />
+  </div>
+  <div class="profile-form">
+    <div>
+      <form formGroup="profileForm" class="profile-details">
+        <label for="profile" class="form-label">Profile Image:</label>
+        <input
+          *ngIf="editing"
+          type="text"
+          class="form-control"
+          formControlName="profile"
+        />
+        <div *ngIf="!editing" class="profile-load">
+          {{ profileForm.get("profile")?.value }}
+        </div>
+
+        <label for="username" class="form-label">Username:</label>
+        <input
+          *ngIf="editing"
+          type="text"
+          class="form-control"
+          formControlName="username"
+        />
+        <div *ngIf="!editing" class="username-load">
+          {{ profileForm.get("username")?.value }}
+        </div>
+
+        <label for="email" class="form-label">Email:</label>
+        <input
+          *ngIf="editing"
+          type="email"
+          class="form-control"
+          formControlName="email"
+        />
+        <div *ngIf="!editing" class="email-load">
+          {{ profileForm.get("email")?.value }}
+        </div>
+
+        <div class="profile-buttons">
+          <button
+            type="button"
+            *ngIf="!editing"
+            class="btn btn-primary"
+            (click)="setEditing()"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            *ngIf="editing"
+            class="btn btn-primary"
+            (click)="setEditing()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="updateProfile()"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+
+      <form class="profile-password">
+        <label for="oldpassword" class="form-label">Old Password</label>
+        <input type="password" class="form-control" />
+
+        <label for="newpassword" class="form-label">New Password</label>
+        <input type="password" class="form-control" />
+
+        <label for="repeatpassword" class="form-label">Repeat Password</label>
+        <input type="password" class="form-control" />
+
+        <button type="button" class="btn btn-primary">Update</button>
+      </form>
+    </div>
+  </div>
+</div>

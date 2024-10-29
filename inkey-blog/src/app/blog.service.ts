@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BlogInfoInterface } from './blog-info-interface';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -88,16 +89,53 @@ export class BlogService {
 
   getBlogById(_id:String){
     let data = this.http.get(`${this.url}/blog/getblog/${_id}`)
+    console.log(data)
     return data;
+  }
 
-    // const response = await fetch(`${this.url}/blog/getblog/${_id}`, {
-    //   method: 'POST',
-    //   mode: 'cors',
-    //   headers: { "Content-Type": "application/json" },
-    // });
-    // const data = await response.json();
-    // const returnArr = data.data
-    // return returnArr||{};
+  async addComment(content:String,currUsername:any,blogId:String):Promise<Boolean>{
+      const response = await fetch(`${this.url}/blog/addcomment`,{
+        method:'POST',
+        mode:'cors',
+        headers: { "Content-Type": "application/json" },
+        body:JSON.stringify({
+          content:content,
+          username:currUsername,
+          blog:blogId
+        }),
+      })
+      const data = await response.json()
+      console.log(data)
+      return data.success;
+  }
+
+  async getComments(blogId:String){
+    const response = await fetch(`${this.url}/blog/getcomments`,{
+      method:'POST',
+      mode:'cors',
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify({
+       blog:blogId
+      }),
+    })
+    const data = await response.json()
+    return data.data;
+  }
+
+  async addReply(commentId:String, replyContent:String, username:String){
+    const response = await fetch(`${this.url}/blog/addreply`,{
+      method:'POST',
+      mode:'cors',
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify({
+       commentId:commentId,
+       replyContent:replyContent,
+       username:username
+      }),
+    })
+    const data = await response.json()
+    console.log(data)
+    return data.success;
   }
 
   

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { UserInfoInterface } from './user-info-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +75,28 @@ export class AuthenticationService {
     })
     return this.loginStatus;
   }
+
+  async getProfile(username:String){
+    const response = await fetch(`${this.url}/auth/getdetails`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username:username,
+      }),
+    });
+    const data = await response.json();
+    const exdata = data.data;
+    const info:UserInfoInterface = {
+      _id:exdata._id,
+      email:exdata.email,
+      password:exdata.password,
+      username:exdata.username,
+      isadmin:exdata.isadmin,
+      profile:exdata.profile
+    }
+    return info;
+  }
+
   constructor() {}
 }
