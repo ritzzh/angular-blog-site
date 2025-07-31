@@ -6,7 +6,7 @@ import { UserInfoInterface } from './user-info-interface';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  url = 'http://localhost:4000'
+  url = 'https://blog-backend-eta-blond.vercel.app'
   // url='https://blogbackend-beta.vercel.app'
   private isAdminSubject = new BehaviorSubject<Boolean>(false);
   isAdmin$ = this.isAdminSubject.asObservable();

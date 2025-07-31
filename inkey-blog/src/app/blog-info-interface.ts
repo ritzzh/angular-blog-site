@@ -1,7 +1,7 @@
 export interface BlogInfoInterface {
-    _id:String,
-    title:String,
-    content:String,
-    username:String,
-    isapproved:String
+    _id:string,
+    title:string,
+    content:string,
+    username:string,
+    isapproved:string
 }

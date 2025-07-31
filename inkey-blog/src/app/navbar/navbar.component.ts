@@ -1,53 +1,53 @@
-import { Component } from '@angular/core';
-import { RouterLink,Router } from '@angular/router';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { RouterLink, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink,CommonModule],
+  imports: [RouterLink, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  loggedIn:Boolean = false;
-  username:String = "";
-  stored:string|null = "";
-  tempuser:any = "";
-  isadmin:Boolean = false;
+  loggedIn: Boolean = false;
+  username: String = "";
+  isadmin: Boolean = false;
 
-  handleLogout(){
+  constructor(
+    private router: Router,
+    private authService: AuthenticationService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
+  handleLogout() {
     this.authService.logout();
     this.router.navigate(["/"]);
   }
-  ngOnInit():void{
-    this.authService.loggedIn$.subscribe(msg=>{
+
+  ngOnInit(): void {
+    const isBrowser = isPlatformBrowser(this.platformId);
+
+    this.authService.loggedIn$.subscribe(msg => {
       this.loggedIn = msg;
-      if(!this.loggedIn){
-        this.loggedIn = localStorage.getItem('login')==='true'?true:false;
+      if (!this.loggedIn && isBrowser) {
+        this.loggedIn = localStorage.getItem('login') === 'true';
       }
-      console.log("user is logged in : " +this.loggedIn)
     });
-    this.authService.currUsername$.subscribe(msg=>{
+
+    this.authService.currUsername$.subscribe(msg => {
       this.username = msg;
-      if(this.username.length==0)
-      {
-        this.username = localStorage.getItem('username')||"";
+      if (!this.username && isBrowser) {
+        this.username = localStorage.getItem('username') || "";
       }
-    })
-    this.authService.isAdmin$.subscribe(next=>{
-      this.isadmin=next;
-      if(!this.isadmin)
-      {
-        this.isadmin = localStorage.getItem('admin')==='true';
+    });
+
+    this.authService.isAdmin$.subscribe(msg => {
+      this.isadmin = msg;
+      if (!this.isadmin && isBrowser) {
+        this.isadmin = localStorage.getItem('admin') === 'true';
       }
-    })
-    
-
-  }
-
-  constructor(private router:Router,private authService: AuthenticationService){
-    
+    });
   }
 }

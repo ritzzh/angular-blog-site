@@ -20,7 +20,7 @@ export class AllblogsComponent {
 
   getBlogs(){
     this.blogService.getAllBlog().then(res=>{
-      this.blogs = res
+      this.blogs = res;
     })
   }
 

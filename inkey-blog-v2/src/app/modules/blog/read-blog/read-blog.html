@@ -1,0 +1,77 @@
+<div class="container py-4 blog-wrapper">
+  <!-- Loading Spinner -->
+  <div class="d-flex justify-content-center" *ngIf="loading">
+    <mat-spinner color="primary" diameter="48"></mat-spinner>
+  </div>
+
+  <!-- Blog Content -->
+  <mat-card class="blog-card shadow rounded-4 overflow-hidden mb-4" *ngIf="!loading">
+    <div class="position-relative">
+      <button mat-icon-button color="warn" class="position-absolute top-0 end-0 m-2" (click)="goBack()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <mat-card-content class="py-3 px-4">
+      <h1 class="fw-bold mb-1">{{ title }}</h1>
+      <p class="text-muted">by <strong>{{ username }}</strong></p>
+    </mat-card-content>
+
+    <mat-divider></mat-divider>
+
+    <div class="blog-content px-4 py-3" [innerHTML]="content"></div>
+  </mat-card>
+
+  <!-- Comment Input (not using mat-form-field) -->
+  <mat-card class="mb-4 shadow-sm p-4 rounded-4">
+    <form [formGroup]="commentForm" (ngSubmit)="addComment()" class="w-100">
+      <label for="commentInput" class="form-label fw-semibold">Add a Comment</label>
+      <input
+        type="text"
+        id="commentInput"
+        formControlName="comment"
+        class="form-control mb-2"
+        placeholder="Type your comment here..."
+      />
+      <button mat-flat-button color="primary" type="submit" [disabled]="commentForm.invalid">Comment</button>
+    </form>
+  </mat-card>
+
+  <!-- Comments Section -->
+  <div class="mt-4">
+    <h4 class="mb-3 fw-semibold">Comments</h4>
+    <div class="comment-container-list" *ngIf="commentDisplay && commentDisplay.length > 0">
+      <mat-card *ngFor="let comment of commentDisplay" class="mb-3 p-3 shadow-sm rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <strong>{{ comment.username }}</strong>
+          <button mat-button color="accent" (click)="handleReplyClick(comment._id)" [disabled]="replying">
+            Reply
+          </button>
+        </div>
+        <p>{{ comment.content }}</p>
+
+        <!-- Reply Input (No mat-form-field) -->
+        <div *ngIf="replying && comment._id === activatedComment" class="mt-2">
+          <label for="replyInput" class="form-label">Reply</label>
+          <input
+            id="replyInput"
+            [(ngModel)]="reply"
+            name="replyInput"
+            class="form-control mb-2"
+            placeholder="Type your reply here..."
+          />
+          <div class="d-flex gap-2 mt-2">
+            <button mat-stroked-button color="primary" (click)="addReply(comment._id)">Reply</button>
+            <button mat-stroked-button color="warn" (click)="handleReplyCancel()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Replies -->
+        <div *ngFor="let reply of comment.replies" class="ps-3 mt-3 border-start border-2 border-secondary">
+          <p class="mb-1 text-secondary"><strong>{{ reply.username }}</strong></p>
+          <p class="mb-2">{{ reply.content }}</p>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

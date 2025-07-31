@@ -1,0 +1,49 @@
+<div class="createblogs-outer container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary">{{ isEditMode ? 'Edit Blog' : 'Create Blog' }}</h2>
+    <button mat-stroked-button color="accent" (click)="goBack()">Go to Blog</button>
+  </div>
+
+  <div class="card p-4 shadow-sm">
+    <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="w-100 mb-4">
+        <mat-label>Title</mat-label>
+        <input matInput id="title" formControlName="title" placeholder="Enter blog title..." />
+        <mat-error *ngIf="blogForm.get('title')?.invalid && blogForm.get('title')?.touched">
+          Title is required.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="mb-4">
+        <label class="form-label fw-semibold text-secondary">Content:</label>
+        <editor
+          apiKey="0cj1uviecifcpmih8jfo4lswwom9ljjgerwzpx5g2yzf8jvi"
+          formControlName="content"
+          [init]="{
+            height: 400,
+            menubar: true,
+            plugins: 'lists link image charmap preview',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | link image',
+            placeholder: 'Write your blog content here...'
+          }"
+        ></editor>
+        <div *ngIf="blogForm.get('content')?.invalid && blogForm.get('content')?.touched" class="text-danger mt-1">
+          Content is required.
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end align-items-center mt-4">
+        <button mat-raised-button color="primary" type="submit" [disabled]="blogForm.invalid || loading">
+          {{ isEditMode ? 'Update Blog' : 'Create Blog' }}
+          <mat-progress-spinner
+            *ngIf="loading"
+            diameter="20"
+            mode="indeterminate"
+            color="accent"
+            class="ms-2"
+          ></mat-progress-spinner>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

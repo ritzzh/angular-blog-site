@@ -12,7 +12,7 @@ mongoose.connect(process.env.MongoUrl)
     console.log("database connected")
 )
 .catch((err)=>{
-    console.log("error connecting");
+    console.log("error connecting", err);
 })
 
 const app = express();

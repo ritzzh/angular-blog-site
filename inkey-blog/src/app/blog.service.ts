@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BlogService {
-  url = "http://localhost:4000"
+  url = "https://blogfrontend-ten-ivory.vercel.app"
   // url='https://blogbackend-beta.vercel.app'
 
   async saveBlog(title:string,content:string,username:String):Promise<Boolean>{
