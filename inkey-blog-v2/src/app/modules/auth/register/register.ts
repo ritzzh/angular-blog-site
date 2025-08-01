@@ -1,46 +1,108 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {  ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonService } from '../../../core/services/common-service';// ✅ Update path as needed
+import { MatDialog } from '@angular/material/dialog';
+
+import {
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
+import {
+  MatFormFieldModule
+} from '@angular/material/form-field';
+import {
+  MatInputModule
+} from '@angular/material/input';
+import {
+  MatButtonModule
+} from '@angular/material/button';
+import {
+  MatCardModule
+} from '@angular/material/card';
+import {
+  MatIconModule
+} from '@angular/material/icon';
+import {
+  RouterModule
+} from '@angular/router';
+import {
+  CommonModule
+} from '@angular/common';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-register',
-  imports: [    CommonModule,
-    MatFormFieldModule,
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    RouterModule],
+    RouterModule
+  ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
-  standalone: true
 })
 export class Register {
   registerForm: FormGroup;
+  errorMsg: string = '';
+  successMsg: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private commonService: CommonService,
+    private dialog: MatDialog
+  ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
+      adminCode: [''],
     });
   }
 
-  onRegister() {
-
-    if (this.registerForm.valid) {
-      const { name, email, password } = this.registerForm.value;
-      // TODO: Call register API
-      console.log('Register:', name, email, password);
-    }
+async onRegister() {
+  if (this.registerForm.invalid) {
+    this.openDialog('Invalid Input', 'Please fill all required fields correctly.', 'warning');
+    return;
   }
+
+  const { name, email, password, adminCode } = this.registerForm.value;
+
+  const { success, message } = await this.commonService.validateSignUp(
+    name,
+    email,
+    password,
+    adminCode || ''
+  );
+
+  if (success) {
+    this.openDialog('Success', message || 'Registration successful!', 'confirm')
+      .afterClosed()
+      .subscribe(() => this.router.navigate(['/login']));
+  } else {
+    this.openDialog('Registration Failed', message || 'Please try again.', 'warning');
+  }
+}
+
+openDialog(title: string, subtext: string, type: 'confirm' | 'warning') {
+  return this.dialog.open(ConfirmDialogComponent, {
+    data: {
+      type,
+      title,
+      heading: type === 'warning' ? 'Warning' : 'Confirmation',
+      subtext,
+      confirmText: 'OK',
+      cancelText: ''
+    },
+    width: '400px'
+  });
+}
+
 }

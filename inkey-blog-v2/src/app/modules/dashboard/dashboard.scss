@@ -10,12 +10,26 @@
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   cursor: pointer;
 
+  .blog-thumbnail {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .blog-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    object-position: center;
+    height: 100%; // Optional: can also try 'auto' depending on design
+    width: 100%;
+  }
+
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-
-    .blog-thumbnail {
-      transform: scale(1.03);
-    }
   }
 }

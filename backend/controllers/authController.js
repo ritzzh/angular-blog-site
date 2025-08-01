@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
+const Blog = require('../models/blog'); // Make sure to import this at the top
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -43,65 +44,101 @@ exports.login = async (req, res) => {
 };
 
 exports.signup = async (req, res) => {
-  // console.log("signup requested");
-  const { username, password, email } = req.body;
-  let isadmin = false;
+  const { username, password, email, adminCode } = req.body;
+
   try {
-    let existingUser = await User.findOne({ username });
+    // ✅ Check for existing user by username OR email
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }],
+    });
+
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "username present",
+        message: "Username or email already exists",
       });
     }
-    const newUser = new User({ username, password, email, isadmin });
+
+    // ✅ Create user (password will be hashed in Mongoose pre-save hook)
+    const newUser = new User({
+      username,
+      password,
+      email,
+      isadmin: adminCode === process.env.ADMIN_CODE,
+    });
+
     await newUser.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
-      message: "user registered",
+      message: "User registered successfully",
     });
   } catch (err) {
-    // console.log('signup error :',err);
-    res.status(500).json({
+    console.error("Signup error:", err);
+    return res.status(500).json({
       success: false,
-      message: "server error",
+      message: "Server error",
     });
   }
 };
 
+
+
+
 exports.updateDetails = async (req, res) => {
-  const { username, password, email, profile } = req.body;
+  const { username, profile, originalUsername } = req.body;
+
   try {
-    let updateUser = await User.findOneAndUpdate(
-      { username: username },
+    // Step 1: Check if new username is already taken
+    if (username !== originalUsername) {
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: "Username already taken. Choose another.",
+        });
+      }
+    }
+
+    // Step 2: Update the user profile
+    const updateUser = await User.findOneAndUpdate(
+      { username: originalUsername },
       {
-        password: password,
-        email: email,
-        profile: profile,
+        username: username,
+        profile: profile || "",
       },
       { new: true }
     );
 
-    if (updateUser) {
-      res.status(200).json({
-        success: true,
-        message: "profile updated",
-      });
-    } else {
+    if (!updateUser) {
       return res.status(400).json({
         success: false,
-        message: "failed update",
+        message: "Update failed. User not found.",
       });
     }
+
+    // Step 3: Update all blogs with the old username to the new one
+    await Blog.updateMany(
+      { username: originalUsername },
+      { $set: { username: username } }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Profile and associated blogs updated successfully.",
+    });
+
   } catch (err) {
-    // console.log('signup error :',err);
+    console.error("Update error:", err);
     res.status(500).json({
       success: false,
-      message: "server error",
+      message: "Server error during update.",
+      error: err.message,
     });
   }
 };
+
+
 
 exports.getDetails = async (req, res) => {
   const { username } = req.body;

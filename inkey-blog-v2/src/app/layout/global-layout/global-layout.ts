@@ -14,7 +14,8 @@ import { SideNavBar } from "../side-nav-bar/side-nav-bar";
   selector: 'app-global-layout',
   imports: [CommonModule, NavBar, DashboardRoutingModule, MatToolbarModule, MatSidenavModule, MatListModule, MatIconModule, SideNavBar],
   templateUrl: './global-layout.html',
-  styleUrl: './global-layout.scss'
+  styleUrl: './global-layout.scss',
+  standalone: true,
 })
 export class GlobalLayout {
   creatorName = 'Ritesh';
@@ -25,7 +26,6 @@ instagramUsername = 'ritesh.ig';             // Replace with actual
   sidenavMode: 'side' | 'over' = 'side'; // can also switch to responsive mode later
 
   toggleSidenav(event : any) {
-    console.log("recieveing", event)
     this.isSidenavOpen = !this.isSidenavOpen;
   }
 }

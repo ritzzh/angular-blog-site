@@ -8,28 +8,45 @@ export const childAuthGuard: CanActivateChildFn = async (childRoute, state) => {
 
   const isLoggedIn = await commonService.checkLoginStatus();
 
-  if (isLoggedIn) {
-    console.log("user is logged in");
-  } else {
-    console.log("user is not logged in");
-  }
-
-  console.log(childRoute, state);
-
   const url = state.url;
   const firstEndpoint = url.split('/').filter(Boolean)[0]; // extracts "dashboard" from "/dashboard/stats"
 
   switch (firstEndpoint) {
-    case 'login':
-      console.log('Navigating to Login');
+    case "login":
+      if (isLoggedIn) {
+        router.navigate(['/dashboard']);
+      }
       return !isLoggedIn;
       break;
-    case 'dashboard':
-      console.log('Navigating to dashboard');
+    case "register":
+      if (isLoggedIn) {
+        router.navigate(['/dashboard']);
+      }
+      return !isLoggedIn;
+      break;
+    case "dashboard":
+      if (!isLoggedIn) {
+        router.navigate(['/login']);
+      }
       return isLoggedIn;
       break;
+    case "blog":
+      if (!isLoggedIn) {
+        router.navigate(['/login']);
+      }
+      return isLoggedIn;
+      break;
+    case "profile":
+      if (!isLoggedIn) {
+        router.navigate(['/login']);
+      }
+      return isLoggedIn;  
+      break;
     default:
-      console.log('Unknown route');
+      // Handle unknown routes
+      router.navigate(['/dashboard']);
+      console.log("Unknown route");
+      return false;
       break;
   }
 

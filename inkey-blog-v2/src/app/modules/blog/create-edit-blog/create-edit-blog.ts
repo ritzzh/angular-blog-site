@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
@@ -43,7 +43,7 @@ export class CreateEditBlog implements OnInit {
     private location: Location,
     private blogService: BlogService,
     private commonService: CommonService,
-    private cdr: : ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {
     this.blogForm = this.fb.group({
       title: ['', Validators.required],
@@ -67,11 +67,11 @@ export class CreateEditBlog implements OnInit {
   loadBlogDetails() {
     this.loading = true;
     this.blogService.getBlogById(this.blogId).subscribe({
-      next: (blog) => {
+      next: (blog:any) => {
         if (blog) {
           this.blogForm.patchValue({
-            title: blog.title || '',
-            content: blog.content || ''
+            title: blog?.data?.title || 'hehe',
+            content: blog?.data?.content || ''
           });
           this.bloginfo = { ...blog };
         }
@@ -99,7 +99,7 @@ export class CreateEditBlog implements OnInit {
         this.loading = false;
         if (result) {
           alert(this.isEditMode ? 'Updated successfully' : 'Blog saved successfully');
-          this.router.navigate(['/blog/myblogs']);
+          this.router.navigate(['/blog/my-blogs']);
         }
       },
       error: (err) => {

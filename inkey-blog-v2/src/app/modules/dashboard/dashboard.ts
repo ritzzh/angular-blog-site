@@ -7,11 +7,12 @@ import { BlogInfoInterface } from '../../shared/types/BlogTypes';
 import { MatIconModule } from '@angular/material/icon';
 import { Subject, takeUntil, take, BehaviorSubject } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet, MatIconModule, MatProgressSpinner],
+  imports: [CommonModule, RouterLink, RouterOutlet, MatIconModule, MatProgressSpinner, MatButtonModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -45,7 +46,6 @@ export class Dashboard implements OnInit, OnDestroy {
       .subscribe((blogs) => {
         this.blogs = [...blogs];
         this.blogs$.next([...blogs]);
-        console.log('Blogs loaded:', this.blogs);
         this.loading = false;
         this.cdr.detectChanges();
       });

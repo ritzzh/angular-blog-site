@@ -3,13 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BlogInfoInterface } from '../../shared/types/BlogTypes';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import environment from '../../../../environment.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogService {
-  private readonly BASE_URL = 'http://localhost:4000';
-  // private readonly BASE_URL = 'https://blogbackend-beta.vercel.app';
+  private readonly BASE_URL = environment.apiUrl;
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

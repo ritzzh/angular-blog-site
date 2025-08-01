@@ -1,28 +1,36 @@
-<div class="d-flex flex-column min-vh-100">
-  <!-- Global Top Navbar -->
-  <div class="global-nav">
-    <app-nav-bar (toggleSidenav)="toggleSidenav($event);"></app-nav-bar>
+<!-- Parent Wrapper with full height -->
+<div class="app-wrapper d-flex flex-column min-vh-100">
+
+  <!-- Fixed Top Navbar -->
+  <div class="global-nav z-3 position-relative">
+    <app-nav-bar (toggleSidenav)="toggleSidenav($event)"></app-nav-bar>
   </div>
 
-  <!-- Layout with Sidenav and Content -->
-  <mat-sidenav-container class="flex-fill" autosize>
-    <!-- Sidebar -->
-    <mat-sidenav #sidenav [(opened)]="isSidenavOpen" [mode]="sidenavMode" class="bg-light"
-      [style.width.px]="isSidenavOpen ? 60 : 60">
-      <app-side-nav-bar>
-      </app-side-nav-bar>
-    </mat-sidenav>
+  <!-- Main Layout with Sidebar + Content -->
+  <div class="flex-grow-1 d-flex">
+    <mat-sidenav-container class="flex-grow-1" autosize>
 
-    <!-- Main Content -->
-    <mat-sidenav-content class="p-3">
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+      <!-- Sidebar -->
+      <mat-sidenav #sidenav [(opened)]="isSidenavOpen" [mode]="sidenavMode"
+        class="bg-light" fixedInViewport [style.width.px]="isSidenavOpen ? 60 : 60"
+        [style.marginTop.px]="56"> <!-- Adjust marginTop to match navbar height -->
+        <app-side-nav-bar></app-side-nav-bar>
+      </mat-sidenav>
+
+      <!-- Main Content Area -->
+      <mat-sidenav-content class="p-3" style="padding-bottom: 40px;">
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+
+    </mat-sidenav-container>
+  </div>
+
+  <!-- Footer -->
   <mat-toolbar color="primary"
-    class="jump-footer text-light d-flex flex-column flex-md-row justify-content-between align-items-center"
-    style="max-height: 32px; font-size: 14px;">
+    class="jump-footer text-light fixed-bottom d-flex flex-column flex-md-row justify-content-between align-items-center"
+    style="height: 32px; font-size: 14px; z-index: 999;">
     <span class="mb-1 mb-md-0 text-center w-100 w-md-auto">
-      © 2025 <strong>Jump Jelly</strong>. All rights reserved.
+      © 2025 <strong>!nk stain</strong>. All rights reserved.
     </span>
 
     <span class="text-center">
@@ -38,7 +46,5 @@
       </a>
     </span>
   </mat-toolbar>
-
-  <!-- Global Sticky Footer -->
 
 </div>

@@ -3,5 +3,6 @@ export interface BlogInfoInterface {
     title:string,
     content:string,
     username:string,
-    isapproved:string
+    isapproved:string,
+    createdAt?: Date // Optional field for created date
 }

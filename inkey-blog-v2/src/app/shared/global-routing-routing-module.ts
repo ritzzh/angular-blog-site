@@ -6,7 +6,7 @@ import { childAuthGuard } from '../core/guards/child-auth-guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: '/dashboard',
     pathMatch: 'full'
   },
   {

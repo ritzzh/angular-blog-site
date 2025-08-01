@@ -37,15 +37,15 @@ export class NavBar {
     switch ( selection ) {
       case 'logout': {
         this.commonService.updateLoginStatus(false);
-        this.router.navigate(['/jump-start']);
+        this.router.navigate(['/login']);
         break;
       }
-      case 'accounts': {
-        this.router.navigate(['/accounts']);
+      case 'blogs': {
+        this.router.navigate(['blog/my-blogs']);
         break;
       }
-      case 'settings': {
-        this.router.navigate(['/settings']);
+      case 'profile': {
+        this.router.navigate(['/profile']);
         break;
       }
       default: break;
@@ -53,7 +53,6 @@ export class NavBar {
   }
 
   openSideNav() {
-    console.log('emmiting')
     this.toggleSidenav.emit(true);
   }
 }
