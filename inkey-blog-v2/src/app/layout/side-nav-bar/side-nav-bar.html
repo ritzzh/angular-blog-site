@@ -1,0 +1,11 @@
+<div class="side-nav-list">
+    <a *ngIf="isLoggedIn" routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon class="mt-2">dashboard</mat-icon>
+    </a>
+    <a routerLink="/blog/my-blogs" routerLinkActive="active">
+        <mat-icon class="mt-2">rocket_launch</mat-icon>
+    </a>
+    <a *ngIf="isLoggedIn" routerLink="/profile" routerLinkActive="active">
+        <mat-icon class="mt-2">person</mat-icon>
+    </a>
+</div>

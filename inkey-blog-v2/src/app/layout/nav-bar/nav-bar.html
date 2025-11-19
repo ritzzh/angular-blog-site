@@ -1,0 +1,33 @@
+<mat-toolbar color="primary" class="shadow-sm border-bottom px-1">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+
+    <!-- Brand + Mobile Toggle -->
+    <div class="d-flex align-items-center ml-2">
+      <button mat-icon-button (click)="openSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <h1 class="logo">!nk Stain</h1>
+    </div>
+
+    <!-- Desktop Nav Links -->
+     <div class="actions d-flex gap-3">
+          <button *ngIf="!isLoggedIn" matButton="outlined"  (click)="redirectToLogin()" class="d-flex align-items-center">
+            <mat-icon class="me-1">person</mat-icon>
+            <span class="d-none d-sm-inline">Login</span>
+          </button>
+     
+         <!-- Profile Menu -->
+         <button *ngIf="isLoggedIn" mat-raised-button [matMenuTriggerFor]="profileMenu" class="d-flex align-items-center">
+           <mat-icon class="me-1">person</mat-icon>
+           <span class="d-none d-sm-inline">Profile</span>
+         </button>
+         <mat-menu #profileMenu="matMenu">
+           <button mat-menu-item (click)="getMenuSelection('profile')">Profile</button>
+           <button mat-menu-item (click)="getMenuSelection('blogs')">My Blogs</button>
+           <mat-divider></mat-divider>
+           <button mat-menu-item (click)="getMenuSelection('logout')">Logout</button>
+         </mat-menu>
+     </div>
+
+  </div>
+</mat-toolbar>
